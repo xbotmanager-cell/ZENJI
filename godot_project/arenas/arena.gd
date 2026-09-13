@@ -1,20 +1,20 @@
 extends Node2D
 
+var arenas = [
+	preload("res://assets/arenas/arena_01.png"),
+	preload("res://assets/arenas/arena_03.jpg")
+]
+
 func _ready():
 	var tex = null
-	var arenas = ["res://assets/arenas/arena_01.png", "res://assets/arenas/arena_02.png", "res://assets/arenas/arena_03.jpg"]
-	var valid_arenas = []
 	
+	var valid = []
 	for a in arenas:
-		if FileAccess.file_exists(a):
-			valid_arenas.append(a)
+		if a != null:
+			valid.append(a)
 			
-	if valid_arenas.size() > 0:
-		var chosen = valid_arenas[randi() % valid_arenas.size()]
-		var img = Image.new()
-		var err = img.load(chosen)
-		if err == OK:
-			tex = ImageTexture.create_from_image(img)
+	if valid.size() > 0:
+		tex = valid[randi() % valid.size()]
 		
 	if tex:
 		var bg_sprite = Sprite2D.new()

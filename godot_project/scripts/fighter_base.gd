@@ -211,6 +211,7 @@ var Poses = {
 }
 
 func _ready():
+	z_index = 10
 	visual = Node2D.new()
 	add_child(visual)
 	visual.position.y = -90 # Center offset

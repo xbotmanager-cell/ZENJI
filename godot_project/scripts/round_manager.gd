@@ -10,6 +10,7 @@ var ui
 var camera
 var score_manager
 var fatality_system
+var ai
 
 var round_num = 1
 var player_wins = 0
@@ -35,12 +36,12 @@ func _ready():
 	combat = load("res://scripts/combat_system.gd").new()
 	add_child(combat)
 	
-	spawn_fighters()
-	start_round()
+	# Defer initialization to avoid adding children to parent while it's entering the tree
+	call_deferred("_initialize_fighters")
 
-func spawn_fighters():
+func _initialize_fighters():
 	player = load("res://scripts/player.gd").new()
-	player.position = Vector2(400, 600)
+	player.position = Vector2(380, 520)
 	player.neon_color = Color(0, 1, 1) # Cyan - ZENJI
 	player.speed = 350
 	player.max_hp = 100
@@ -48,29 +49,37 @@ func spawn_fighters():
 	
 	var chosen_enemy = enemy_profiles[randi() % enemy_profiles.size()]
 	enemy = load("res://scripts/enemy.gd").new()
-	enemy.position = Vector2(880, 600)
+	enemy.position = Vector2(900, 520)
 	enemy.direction = -1
 	enemy.neon_color = chosen_enemy.color
 	enemy.speed = chosen_enemy.speed
 	enemy.max_hp = chosen_enemy.hp
 	get_parent().add_child(enemy)
 	
-	combat.player = player
-	combat.enemy = enemy
-	combat.score_manager = score_manager
-	
 	if not is_training:
-		var ai = load("res://scripts/enemy_ai.gd").new()
-		ai.enemy = enemy
-		ai.player = player
-		ai.combat = combat
+		ai = load("res://scripts/enemy_ai.gd").new()
 		add_child(ai)
+	
+	# Wait for a frame to ensure they are inside the tree before fully configuring
+	await get_tree().process_frame
+	
+	if player and enemy and player.is_inside_tree() and enemy.is_inside_tree():
+		combat.player = player
+		combat.enemy = enemy
+		combat.score_manager = score_manager
+		
+		if not is_training and ai:
+			ai.enemy = enemy
+			ai.player = player
+			ai.combat = combat
+		
+		start_round()
 
 func start_round():
 	player.hp = player.max_hp
 	enemy.hp = enemy.max_hp
-	player.position = Vector2(400, 600)
-	enemy.position = Vector2(880, 600)
+	player.position = Vector2(380, 520)
+	enemy.position = Vector2(900, 520)
 	player.state = "IDLE"
 	enemy.state = "IDLE"
 	timer = 99.0
@@ -83,21 +92,25 @@ func _process(delta):
 			if timer <= 0:
 				check_ko()
 				return
-		if player.hp <= 0 or enemy.hp <= 0:
-			check_ko()
-			
-		if player.state not in ["DEAD", "FATALITY", "FATALITY_VICTIM", "GRABBED"]:
-			player.direction = 1 if enemy.position.x > player.position.x else -1
-		if enemy.state not in ["DEAD", "FATALITY", "FATALITY_VICTIM", "GRABBED"]:
-			enemy.direction = 1 if player.position.x > enemy.position.x else -1
-			
-		var mid = (player.position.x + enemy.position.x) / 2.0
-		camera.position.x = lerp(camera.position.x, mid, 5.0 * delta)
-		camera.position.y = 360.0
+		
+		if player and enemy:
+			if player.hp <= 0 or enemy.hp <= 0:
+				check_ko()
+				
+			if player.state not in ["DEAD", "FATALITY", "FATALITY_VICTIM", "GRABBED"]:
+				player.direction = 1 if enemy.position.x > player.position.x else -1
+			if enemy.state not in ["DEAD", "FATALITY", "FATALITY_VICTIM", "GRABBED"]:
+				enemy.direction = 1 if player.position.x > enemy.position.x else -1
+				
+			var mid = (player.position.x + enemy.position.x) / 2.0
+			if camera:
+				camera.position.x = lerp(camera.position.x, mid, 5.0 * delta)
+				camera.position.y = 360.0
 
 func check_ko():
 	state = "KO"
-	camera.shake(0.5, 20)
+	if camera: camera.shake(0.5, 20)
+	
 	if player.hp <= 0:
 		enemy_wins += 1
 		player.state = "DEAD"
