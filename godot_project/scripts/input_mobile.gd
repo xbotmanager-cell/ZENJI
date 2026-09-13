@@ -4,13 +4,14 @@ var round_manager
 
 func _ready():
 	var controls = [
-		{"name": "Left", "rect": Rect2(50, 500, 120, 120), "action": "left"},
-		{"name": "Right", "rect": Rect2(200, 500, 120, 120), "action": "right"},
-		{"name": "Block", "rect": Rect2(50, 350, 120, 120), "action": "block"},
-		{"name": "Jump", "rect": Rect2(900, 500, 120, 120), "action": "jump"},
-		{"name": "Punch", "rect": Rect2(1050, 500, 120, 120), "action": "punch"},
-		{"name": "Kick", "rect": Rect2(1100, 350, 120, 120), "action": "kick"},
-		{"name": "Special", "rect": Rect2(950, 200, 120, 120), "action": "special"}
+		{"name": " ^ ", "rect": Rect2(120, 380, 100, 100), "action": "up"},
+		{"name": " v ", "rect": Rect2(120, 600, 100, 100), "action": "down"},
+		{"name": " < ", "rect": Rect2(20, 490, 100, 100), "action": "left"},
+		{"name": " > ", "rect": Rect2(220, 490, 100, 100), "action": "right"},
+		{"name": "BLK", "rect": Rect2(800, 600, 100, 100), "action": "block"},
+		{"name": "PCH", "rect": Rect2(920, 490, 100, 100), "action": "punch"},
+		{"name": "KCK", "rect": Rect2(1040, 600, 100, 100), "action": "kick"},
+		{"name": "SPC", "rect": Rect2(1160, 490, 100, 100), "action": "special"}
 	]
 	
 	for c in controls:
@@ -52,12 +53,15 @@ class TouchButton extends Control:
 		var combat = parent_ref.round_manager.combat
 		
 		match action:
-			"left": p.input_dir = -1 if is_pressed else (0 if p.input_dir == -1 else p.input_dir)
-			"right": p.input_dir = 1 if is_pressed else (0 if p.input_dir == 1 else p.input_dir)
-			"jump": p.wants_jump = is_pressed
+			"left": p.wants_left = is_pressed
+			"right": p.wants_right = is_pressed
+			"up": p.wants_up = is_pressed
+			"down": p.wants_down = is_pressed
 			"block": p.wants_block = is_pressed
 			"punch": 
-				if is_pressed: combat.execute_attack(p, "PUNCH")
+				if is_pressed: 
+					if p.wants_block: combat.execute_attack(p, "GRAB")
+					else: combat.execute_attack(p, "PUNCH")
 			"kick":
 				if is_pressed: combat.execute_attack(p, "KICK")
 			"special":

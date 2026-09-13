@@ -17,6 +17,14 @@ var enemy_wins = 0
 var state = "INTRO"
 var timer = 99.0
 
+var enemy_profiles = [
+	{"name": "VORTEX", "color": Color(0.2, 0.4, 1.0), "speed": 400, "hp": 90},
+	{"name": "RAVEN", "color": Color(1.0, 0.2, 0.2), "speed": 300, "hp": 120},
+	{"name": "NOVA", "color": Color(0.6, 0.1, 0.8), "speed": 350, "hp": 100},
+	{"name": "BLAZE", "color": Color(1.0, 0.5, 0.1), "speed": 380, "hp": 95},
+	{"name": "TOXIN", "color": Color(0.2, 0.8, 0.3), "speed": 340, "hp": 110}
+]
+
 func _ready():
 	score_manager = load("res://scripts/score_manager.gd").new()
 	add_child(score_manager)
@@ -33,13 +41,18 @@ func _ready():
 func spawn_fighters():
 	player = load("res://scripts/player.gd").new()
 	player.position = Vector2(400, 600)
-	player.neon_color = Color(0, 1, 1)
+	player.neon_color = Color(0, 1, 1) # Cyan - ZENJI
+	player.speed = 350
+	player.max_hp = 100
 	get_parent().add_child(player)
 	
+	var chosen_enemy = enemy_profiles[randi() % enemy_profiles.size()]
 	enemy = load("res://scripts/enemy.gd").new()
 	enemy.position = Vector2(880, 600)
 	enemy.direction = -1
-	enemy.neon_color = Color(1, 0, 0)
+	enemy.neon_color = chosen_enemy.color
+	enemy.speed = chosen_enemy.speed
+	enemy.max_hp = chosen_enemy.hp
 	get_parent().add_child(enemy)
 	
 	combat.player = player
@@ -72,6 +85,11 @@ func _process(delta):
 				return
 		if player.hp <= 0 or enemy.hp <= 0:
 			check_ko()
+			
+		if player.state not in ["DEAD", "FATALITY", "FATALITY_VICTIM", "GRABBED"]:
+			player.direction = 1 if enemy.position.x > player.position.x else -1
+		if enemy.state not in ["DEAD", "FATALITY", "FATALITY_VICTIM", "GRABBED"]:
+			enemy.direction = 1 if player.position.x > enemy.position.x else -1
 			
 		var mid = (player.position.x + enemy.position.x) / 2.0
 		camera.position.x = lerp(camera.position.x, mid, 5.0 * delta)

@@ -1,0 +1,18 @@
+--- /app/applet/godot_project/scripts/fighter_base.gd
++++ /app/applet/godot_project/scripts/fighter_base.gd
+@@ -141,6 +141,13 @@
+ 	visual = Node2D.new()
+ 	add_child(visual)
+ 	visual.position.y = -90 # Center offset
++	
++	var col = CollisionShape2D.new()
++	var shape = CapsuleShape2D.new()
++	shape.radius = 20.0
++	shape.height = 180.0
++	col.shape = shape
++	col.position = Vector2(0, -90)
++	add_child(col)
++	
+ 	build_skeleton()
+ 	set_pose("IDLE", 0.01)
+ 
