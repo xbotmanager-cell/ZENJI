@@ -50,7 +50,6 @@ func execute_attack(attacker, input_type: String):
 	attacker.set_pose(atk.anim, atk.startup)
 	
 	var tw = attacker.create_tween()
-			attacker.attack_tween = tw
 	attacker.attack_tween = tw
 	tw.tween_interval(atk.startup)
 	tw.tween_callback(func():
@@ -106,7 +105,8 @@ func _check_grab(attacker):
 			hit_stop(0.1)
 			
 			var tw = attacker.create_tween()
-			attacker.attack_tween = tw
+	attacker.attack_tween = tw
+		attacker.attack_tween = tw
 			tw.tween_callback(func():
 				attacker.set_pose("GRAB_HOLD", 0.2)
 				defender.set_pose("HURT", 0.2)
