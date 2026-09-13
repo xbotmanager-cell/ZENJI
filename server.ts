@@ -1,9 +1,12 @@
 import express from "express";
 import path from "path";
-import archiver from "archiver";
 import fs from "fs";
 import { createServer as createViteServer } from "vite";
 import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
+const archiver = require("archiver");
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

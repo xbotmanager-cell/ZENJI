@@ -13,4 +13,4 @@ func _process(delta):
 func add_hit(damage):
 	combo += 1
 	combo_timer = 2.0
-	score += damage * 10 + (combo * 5)\n
+	score += damage * 10 + (combo * 5)

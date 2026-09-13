@@ -69,6 +69,7 @@ func _process(delta):
 			timer -= delta
 			if timer <= 0:
 				check_ko()
+				return
 		if player.hp <= 0 or enemy.hp <= 0:
 			check_ko()
 			
@@ -94,4 +95,4 @@ func check_ko():
 		game_manager.load_main_menu()
 	else:
 		round_num += 1
-		start_round()\n
+		start_round()

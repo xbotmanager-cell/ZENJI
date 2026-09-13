@@ -75,4 +75,4 @@ func play_anim(anim_name):
 		tw.tween_property(visual, "rotation_degrees", 0.0, 0.3)
 	elif anim_name == "special":
 		visual.scale = Vector2(1.2 * direction, 1.2)
-		tw.tween_property(visual, "scale", Vector2(1.0 * direction, 1.0), 0.4)\n
+		tw.tween_property(visual, "scale", Vector2(1.0 * direction, 1.0), 0.4)

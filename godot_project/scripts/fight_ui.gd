@@ -40,4 +40,4 @@ func _process(_delta):
 		en_p1.value = (float(round_manager.player.energy) / round_manager.player.max_energy) * 100
 		hp_p2.value = (float(round_manager.enemy.hp) / round_manager.enemy.max_hp) * 100
 		timer_lbl.text = str(int(round_manager.timer))
-		score_lbl.text = "Score: " + str(round_manager.score_manager.score) + "\nCombo: " + str(round_manager.score_manager.combo)\n
+		score_lbl.text = "Score: " + str(round_manager.score_manager.score) + "\nCombo: " + str(round_manager.score_manager.combo)

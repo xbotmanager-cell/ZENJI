@@ -47,4 +47,4 @@ func create_hit_effect(pos: Vector2):
 	var tw = create_tween()
 	tw.tween_property(flash, "scale", Vector2(2, 2), 0.15)
 	tw.parallel().tween_property(flash, "modulate:a", 0.0, 0.15)
-	tw.tween_callback(flash.queue_free)\n
+	tw.tween_callback(flash.queue_free)

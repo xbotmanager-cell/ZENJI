@@ -15,4 +15,4 @@ func _process(delta):
 		shake_time -= delta
 		offset = Vector2(randf_range(-shake_intensity, shake_intensity), randf_range(-shake_intensity, shake_intensity))
 	else:
-		offset = Vector2.ZERO\n
+		offset = Vector2.ZERO

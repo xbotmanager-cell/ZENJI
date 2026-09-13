@@ -29,4 +29,4 @@ func create_btn(text: String, pos: Vector2) -> Button:
 	b.size = Vector2(280, 80)
 	b.add_theme_font_size_override("font_size", 32)
 	add_child(b)
-	return b\n
+	return b

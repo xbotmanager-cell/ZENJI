@@ -21,4 +21,4 @@ func trigger_fatality(player, enemy, camera):
 	
 	await get_tree().create_timer(1.0).timeout
 	bg.queue_free()
-	get_parent().game_manager.load_main_menu()\n
+	get_parent().game_manager.load_main_menu()

@@ -1,1 +1,1 @@
-extends "res://scripts/fighter_base.gd"\n
+extends FighterBase

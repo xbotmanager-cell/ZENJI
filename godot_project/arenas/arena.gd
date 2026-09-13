@@ -20,4 +20,4 @@ func _ready():
 	col.shape = shape
 	col.position = Vector2(1000, 800)
 	static_body.add_child(col)
-	add_child(static_body)\n
+	add_child(static_body)

@@ -61,4 +61,4 @@ class TouchButton extends Control:
 			"kick":
 				if is_pressed: combat.execute_attack(p, "KICK")
 			"special":
-				if is_pressed: combat.execute_attack(p, "SPECIAL")\n
+				if is_pressed: combat.execute_attack(p, "SPECIAL")

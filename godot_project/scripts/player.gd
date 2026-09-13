@@ -1,4 +1,4 @@
-extends "res://scripts/fighter_base.gd"
+extends FighterBase
 
 var input_dir = 0
 var wants_jump = false
@@ -24,4 +24,4 @@ func _physics_process(delta):
 			
 	elif state == "BLOCK":
 		if not wants_block:
-			state = "IDLE"\n
+			state = "IDLE"

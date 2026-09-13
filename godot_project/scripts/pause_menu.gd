@@ -40,4 +40,4 @@ func _ready():
 
 func toggle_pause():
 	get_tree().paused = not get_tree().paused
-	menu_root.visible = get_tree().paused\n
+	menu_root.visible = get_tree().paused

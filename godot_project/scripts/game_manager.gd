@@ -52,4 +52,4 @@ func load_fight(training: bool = false):
 	fight.add_child(pause)
 	
 	add_child(fight)
-	current_scene = fight\n
+	current_scene = fight

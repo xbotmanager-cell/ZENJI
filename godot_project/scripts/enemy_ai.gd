@@ -26,4 +26,4 @@ func _process(delta):
 				if randf() > 0.5:
 					combat.execute_attack(enemy, "PUNCH")
 				else:
-					combat.execute_attack(enemy, "KICK")\n
+					combat.execute_attack(enemy, "KICK")
